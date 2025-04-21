@@ -4,16 +4,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
-# Add parent directory to path to import project modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def create_report_directory():
-    """Create directories for report assets"""
     os.makedirs('figures', exist_ok=True)
 
 def plot_benchmark_functions():
-    """Generate 3D plots for benchmark functions"""
-    # Define functions manually to avoid import issues
+
     def rastrigin(x):
         n = len(x)
         return 10 * n + sum(xi**2 - 10 * np.cos(2 * np.pi * xi) for xi in x)
@@ -58,7 +55,6 @@ def plot_benchmark_functions():
         plt.savefig(f'figures/{name}_3d.png', dpi=300, bbox_inches='tight')
         plt.close()
         
-        # Also create contour plot
         fig, ax = plt.subplots(figsize=(10, 8))
         contour = ax.contourf(X, Y, Z, 50, cmap=cm.coolwarm)
         ax.set_xlabel('X')
@@ -69,23 +65,17 @@ def plot_benchmark_functions():
         plt.close()
 
 def generate_sample_run_plots():
-    """Generate sample run plots for educational purposes"""
-    # Simulate convergence data (since we can't easily run the algorithms)
     generations = np.arange(1, 101)
     
-    # Simulated convergence data
     binary_best = 50 * np.exp(-0.025 * generations) + 15
     real_best = 50 * np.exp(-0.04 * generations) + 5
     
-    # Simulate average population values (higher than best values)
     binary_mean = binary_best + 20 * np.exp(-0.015 * generations)
     real_mean = real_best + 15 * np.exp(-0.03 * generations)
     
-    # Simulate standard deviation (decreases over time)
     binary_std = 30 * np.exp(-0.02 * generations) + 5
     real_std = 25 * np.exp(-0.025 * generations) + 3
     
-    # Generate convergence plots
     plt.figure(figsize=(10, 6))
     plt.plot(generations, binary_best, label="Binary GA", color='blue')
     plt.plot(generations, real_best, label="Real GA", color='green')
@@ -97,7 +87,6 @@ def generate_sample_run_plots():
     plt.savefig('figures/convergence_comparison.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    # Generate statistics plots
     plt.figure(figsize=(10, 6))
     plt.plot(generations, binary_mean, label="Binary GA - Średnia", color='blue')
     plt.plot(generations, real_mean, label="Real GA - Średnia", color='green')
@@ -121,8 +110,6 @@ def generate_sample_run_plots():
     plt.close()
 
 def generate_comparison_plots():
-    """Generate plots comparing different configurations"""
-    # Simulated data for different configurations
     config_names = [
         "Binary: Konfiguracja bazowa",
         "Binary: Wysoka mutacja", 
@@ -134,27 +121,23 @@ def generate_comparison_plots():
         "Real: Uśredniające + Gaussa"
     ]
     
-    # Mean values
     mean_values = [85, 78, 80, 45, 42, 40, 38, 47]
     
-    # Execution times with standard deviation
     exec_times = [5.2, 5.5, 5.3, 5.0, 5.1, 4.9, 5.0, 4.8]
     time_std = [0.3, 0.4, 0.3, 0.2, 0.3, 0.2, 0.3, 0.2]
     
-    # Convergence data for best runs
     generations = np.arange(1, 101)
     convergence_data = [
-        85 * np.exp(-0.02 * generations) + 15,  # Binary base
-        78 * np.exp(-0.022 * generations) + 15, # Binary high mutation
-        80 * np.exp(-0.021 * generations) + 15, # Binary two-point
-        45 * np.exp(-0.035 * generations) + 8,  # Real arithmetic
-        42 * np.exp(-0.033 * generations) + 8,  # Real linear
-        40 * np.exp(-0.038 * generations) + 5,  # Real blend-alpha
-        38 * np.exp(-0.04 * generations) + 5,   # Real blend-alpha-beta
-        47 * np.exp(-0.032 * generations) + 8,  # Real average
+        85 * np.exp(-0.02 * generations) + 15,  
+        78 * np.exp(-0.022 * generations) + 15, 
+        80 * np.exp(-0.021 * generations) + 15, 
+        45 * np.exp(-0.035 * generations) + 8, 
+        42 * np.exp(-0.033 * generations) + 8,  
+        40 * np.exp(-0.038 * generations) + 5,  
+        38 * np.exp(-0.04 * generations) + 5, 
+        47 * np.exp(-0.032 * generations) + 8, 
     ]
     
-    # Standard deviation data
     std_data = [
         30 * np.exp(-0.02 * generations) + 5,
         32 * np.exp(-0.022 * generations) + 5,
@@ -166,7 +149,6 @@ def generate_comparison_plots():
         23 * np.exp(-0.031 * generations) + 3
     ]
     
-    # Bar colors (blue for binary, green for real)
     bar_colors = ['blue', 'blue', 'blue', 'green', 'green', 'green', 'green', 'green']
     
     plt.figure(figsize=(15, 10))
@@ -197,12 +179,10 @@ def generate_comparison_plots():
                  ha='center', va='bottom', fontsize=9)
     
     plt.subplot(2, 2, 3)
-    # Plot binary configs with solid lines
     for i in range(3):
         plt.plot(generations, convergence_data[i], 
                  label=config_names[i], linestyle='-')
     
-    # Plot real configs with dashed lines
     for i in range(3, 8):
         plt.plot(generations, convergence_data[i], 
                  label=config_names[i], linestyle='--')
@@ -214,12 +194,10 @@ def generate_comparison_plots():
     plt.legend(fontsize=7, loc='upper right')
     
     plt.subplot(2, 2, 4)
-    # Plot binary configs with solid lines
     for i in range(3):
         plt.plot(generations, std_data[i], 
                  label=config_names[i], linestyle='-')
     
-    # Plot real configs with dashed lines
     for i in range(3, 8):
         plt.plot(generations, std_data[i], 
                  label=config_names[i], linestyle='--')
@@ -234,7 +212,6 @@ def generate_comparison_plots():
     plt.savefig('figures/comparison_results_Rastrigin.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    # Create bar chart comparing binary vs real
     functions = ["Rastrigin", "Hyperellipsoid", "CEC2014-F3"]
     binary_mean = [80, 120, 250]
     real_mean = [40, 38, 150]
